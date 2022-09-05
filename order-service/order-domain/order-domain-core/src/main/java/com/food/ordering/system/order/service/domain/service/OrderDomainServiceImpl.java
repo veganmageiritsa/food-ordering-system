@@ -3,12 +3,6 @@ package com.food.ordering.system.order.service.domain.service;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.function.Function;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import com.food.ordering.system.order.service.domain.entity.Order;
 import com.food.ordering.system.order.service.domain.entity.Product;
@@ -21,7 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class OrderDomainServiceImpl implements OrderDomainService {
-    private final String UTC = "UTC";
+    
+    private static final String UTC = "UTC";
+    
     @Override
     public OrderCreatedEvent validateAndInitiateOrder(
         Order order, Restaurant restaurant) {
@@ -65,19 +61,20 @@ public class OrderDomainServiceImpl implements OrderDomainService {
     
     private void validateRestaurant(final Restaurant restaurant) {
         if (!restaurant.isActive()) {
-            throw new OrderDomainException("Restaurant is closed" + restaurant.getId().getValue());
+            throw new OrderDomainException("Restaurant is closed " + restaurant.getId().getValue());
         }
     }
     
     private void setOrderProductInformation(final Order order, final Restaurant restaurant) {
-        Map<UUID, Product> products = restaurant.getProducts()
-                                                .stream()
-                                                .collect(Collectors.toMap(product -> product.getId().getValue(), Function.identity()));
-        
-        order.getOrderItems()
-             .forEach(orderItem -> Optional.ofNullable(products.get(orderItem.getOrderId().getValue()))
-                                           .ifPresent(
-                                               product -> orderItem.getProduct().updateWithConfirmedNameAndPrice(product.getName(), product.getPrice())));
+        //        Map<UUID, Product> products = restaurant.getProducts()
+        //                                                .stream()
+        //                                                .collect(Collectors.toMap(product -> product.getId().getValue(), Function.identity()));
+        //
+        //        order.getOrderItems()
+        //             .forEach(orderItem -> Optional.ofNullable(products.get(orderItem.getOrderId().getValue()))
+        //                                           .ifPresent(
+        //                                               product -> orderItem.getProduct().updateWithConfirmedNameAndPrice(product.getName(), product
+        //                                               .getPrice())));
         order.getOrderItems()
              .forEach(orderItem -> restaurant.getProducts().forEach(product -> {
                  Product orderItemProduct = orderItem.getProduct();

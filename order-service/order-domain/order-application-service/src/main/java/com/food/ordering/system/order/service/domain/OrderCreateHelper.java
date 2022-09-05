@@ -49,8 +49,8 @@ public class OrderCreateHelper {
     }
     
     private void checkCustomer(final UUID customerId) {
-        customerRepository.findCustomer(customerId)
-                          .orElseThrow(()-> new OrderDomainException("Customer with id not found: " + customerId));
+         customerRepository.findCustomer(customerId)
+                           .orElseThrow(()-> new OrderDomainException("Customer with id not found: " + customerId));
     }
     
     private Restaurant checkRestaurant(final CreateOrderCommand createOrderCommand) {
@@ -61,7 +61,7 @@ public class OrderCreateHelper {
     }
     
     private Order saveOrder(Order order){
-        var persistedOrder = orderRepository.save(order);
+        Order persistedOrder = orderRepository.save(order);
         log.info("Order is saved with id: {}",persistedOrder.getId().getValue());
         return persistedOrder;
     }
