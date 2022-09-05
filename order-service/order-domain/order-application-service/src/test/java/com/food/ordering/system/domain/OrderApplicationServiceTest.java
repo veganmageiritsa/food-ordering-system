@@ -147,7 +147,7 @@ class OrderApplicationServiceTest {
         Customer customer = new Customer();
         customer.setId(new CustomerId(CUSTOMER_ID));
         
-        Restaurant restaurantResponse = Restaurant.newBuilder()
+        Restaurant restaurantResponse = Restaurant.builder()
                                                   .restaurantId(new RestaurantId(createOrderCommand.getRestaurantId()))
                                                   .active(true)
                                                   .products(List.of(new Product(new ProductId(PRODUCT_ID), "name-1", new Money(new BigDecimal("50.00"))),

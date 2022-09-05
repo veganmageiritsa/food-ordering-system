@@ -25,7 +25,7 @@ import com.food.ordering.system.order.service.domain.valueobject.StreetAddress;
 public class OrderDataMapper {
     
     public Restaurant createOrderCommandToRestaurant(CreateOrderCommand createOrderCommand) {
-        return Restaurant.newBuilder()
+        return Restaurant.builder()
                          .restaurantId(new RestaurantId(createOrderCommand.getRestaurantId()))
                          .products(createOrderCommand.getOrderItems()
                                                      .stream()

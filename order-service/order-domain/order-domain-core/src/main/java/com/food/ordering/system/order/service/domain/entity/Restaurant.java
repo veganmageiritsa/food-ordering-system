@@ -16,7 +16,7 @@ public class Restaurant extends AggregateRoot<RestaurantId> {
         active = builder.active;
     }
     
-    public static Builder newBuilder() {
+    public static Builder builder() {
         return new Builder();
     }
     
