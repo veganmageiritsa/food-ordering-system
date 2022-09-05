@@ -6,6 +6,7 @@
     <modules>
         <module>order-service</module>
         <module>common</module>
+        <module>infrastucture</module>
     </modules>
 
     <parent>
@@ -24,8 +25,8 @@
     <properties>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
 
-<!--        <maven.compiler.source>11</maven.compiler.source>-->
-<!--        <maven.compiler.target>11</maven.compiler.target>-->
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
     </properties>
 
     <dependencyManagement>
@@ -64,6 +65,18 @@
                 <groupId>com.food.ordering.system</groupId>
                 <artifactId>common-domain</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>4.7.0</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>2.7.0</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
