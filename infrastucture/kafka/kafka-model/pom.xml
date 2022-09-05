@@ -35,7 +35,7 @@
                             <goal>schema</goal>
                         </goals>
                         <configuration>
-                            <sourceDirectory>src/main/resource/avro/</sourceDirectory>
+                            <sourceDirectory>src/main/resources/avro/</sourceDirectory>
                             <outputDirectory>src/main/java/</outputDirectory>
                         </configuration>
                     </execution>
