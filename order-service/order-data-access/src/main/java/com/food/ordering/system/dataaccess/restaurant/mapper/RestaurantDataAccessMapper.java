@@ -28,8 +28,7 @@ public class RestaurantDataAccessMapper {
         RestaurantEntity restaurantEntity =
             restaurantEntities.stream()
                               .findFirst()
-                              .orElseThrow(() ->
-                                               new RestaurantDataAccessException("Restaurant could not be found!"));
+                              .orElseThrow(() -> new RestaurantDataAccessException("Restaurant could not be found!"));
         
         List<Product> restaurantProducts = restaurantEntities
             .stream()
