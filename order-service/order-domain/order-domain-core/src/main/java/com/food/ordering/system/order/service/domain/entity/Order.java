@@ -65,7 +65,7 @@ public class Order extends AggregateRoot<OrderId> {
             }).reduce(Money.ZERO, Money::add);
         
         if (!price.equals(orderItemsTotal)) {
-            throw new OrderDomainException("Inalid Total Price");
+            throw new OrderDomainException("Invalid Total Price");
         }
     }
     
