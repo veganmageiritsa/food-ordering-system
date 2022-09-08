@@ -1,4 +1,4 @@
-package com.food.ordering.system.order.service.messaging.publisher.kafka;
+package com.food.ordering.system.kafka.producer;
 
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
@@ -8,13 +8,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
-public class OrderKafkaMessageHelper {
+public class KafkaMessageHelper {
     
     public <T> ListenableFutureCallback<SendResult<String, T>> getKafkaCallback(
         final String responseTopicName,
-        final T requestAvroModel,
+        final T avroModel,
         final String orderId,
-        String requestAvroModelName) {
+        String avroModelName) {
         return new ListenableFutureCallback<>() {
             
             @Override
@@ -33,7 +33,7 @@ public class OrderKafkaMessageHelper {
             @Override
             public void onFailure(final Throwable ex) {
                 log.error("Error While sending {} message {} to topic {}",
-                          requestAvroModelName, requestAvroModel.toString(), responseTopicName);
+                          avroModelName, avroModel.toString(), responseTopicName);
             }
         };
     }

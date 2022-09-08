@@ -3,6 +3,7 @@ package com.food.ordering.system.order.service.messaging.publisher.kafka;
 import org.springframework.stereotype.Component;
 
 import com.food.ordering.system.kafka.order.avro.model.PaymentRequestAvroModel;
+import com.food.ordering.system.kafka.producer.KafkaMessageHelper;
 import com.food.ordering.system.kafka.producer.service.KafkaProducer;
 import com.food.ordering.system.order.service.domain.config.OrderServiceConfigData;
 import com.food.ordering.system.order.service.domain.event.OrderCreatedEvent;
@@ -20,17 +21,17 @@ public class CreateOrderKafkaMessagePublisher implements OrderCreatedPaymentRequ
     
     private final KafkaProducer<String, PaymentRequestAvroModel> kafkaProducer;
     
-    private final OrderKafkaMessageHelper orderKafkaMessageHelper;
+    private final KafkaMessageHelper kafkaMessageHelper;
     
     public CreateOrderKafkaMessagePublisher(
         final OrderMessagingDataMapper orderMessagingDataMapper,
         final OrderServiceConfigData orderServiceConfigData,
         final KafkaProducer<String, PaymentRequestAvroModel> kafkaProducer,
-        final OrderKafkaMessageHelper orderKafkaMessageHelper) {
+        final KafkaMessageHelper kafkaMessageHelper) {
         this.orderMessagingDataMapper = orderMessagingDataMapper;
         this.orderServiceConfigData = orderServiceConfigData;
         this.kafkaProducer = kafkaProducer;
-        this.orderKafkaMessageHelper = orderKafkaMessageHelper;
+        this.kafkaMessageHelper = kafkaMessageHelper;
     }
     
     @Override
@@ -44,7 +45,7 @@ public class CreateOrderKafkaMessagePublisher implements OrderCreatedPaymentRequ
                 paymentRequestTopicName,
                 orderId,
                 paymentRequestAvroModel,
-                orderKafkaMessageHelper.getKafkaCallback(paymentRequestTopicName, paymentRequestAvroModel, orderId, "PaymentRequestAvroModel"));
+                kafkaMessageHelper.getKafkaCallback(paymentRequestTopicName, paymentRequestAvroModel, orderId, "PaymentRequestAvroModel"));
             log.info("PaymentRequestAvroModel send to kafka  for order  id : {}", orderId);
         } catch (Exception e) {
             log.error("Error While sending PaymentRequestAvroModel message to kafka with order ID: {} error: {}",

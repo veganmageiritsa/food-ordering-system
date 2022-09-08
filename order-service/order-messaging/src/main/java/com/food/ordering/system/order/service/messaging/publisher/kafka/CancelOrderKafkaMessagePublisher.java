@@ -4,6 +4,7 @@ package com.food.ordering.system.order.service.messaging.publisher.kafka;
 import org.springframework.stereotype.Component;
 
 import com.food.ordering.system.kafka.order.avro.model.PaymentRequestAvroModel;
+import com.food.ordering.system.kafka.producer.KafkaMessageHelper;
 import com.food.ordering.system.kafka.producer.service.KafkaProducer;
 import com.food.ordering.system.order.service.domain.config.OrderServiceConfigData;
 import com.food.ordering.system.order.service.domain.event.OrderCancelledEvent;
@@ -21,17 +22,17 @@ public class CancelOrderKafkaMessagePublisher implements OrderCancelledRequestPa
     
     private final KafkaProducer<String, PaymentRequestAvroModel> kafkaProducer;
     
-    private final OrderKafkaMessageHelper orderKafkaMessageHelper;
+    private final KafkaMessageHelper kafkaMessageHelper;
     
     public CancelOrderKafkaMessagePublisher(
         OrderMessagingDataMapper orderMessagingDataMapper,
         OrderServiceConfigData orderServiceConfigData,
         KafkaProducer<String, PaymentRequestAvroModel> kafkaProducer,
-        OrderKafkaMessageHelper orderKafkaMessageHelper) {
+        KafkaMessageHelper kafkaMessageHelper) {
         this.orderMessagingDataMapper = orderMessagingDataMapper;
         this.orderServiceConfigData = orderServiceConfigData;
         this.kafkaProducer = kafkaProducer;
-        this.orderKafkaMessageHelper = orderKafkaMessageHelper;
+        this.kafkaMessageHelper = kafkaMessageHelper;
     }
     
     @Override
@@ -46,7 +47,7 @@ public class CancelOrderKafkaMessagePublisher implements OrderCancelledRequestPa
             kafkaProducer.send(paymentRequestTopicName,
                                orderId,
                                paymentRequestAvroModel,
-                               orderKafkaMessageHelper
+                               kafkaMessageHelper
                                    .getKafkaCallback(orderServiceConfigData.getPaymentResponseTopicName(),
                                                      paymentRequestAvroModel,
                                                      orderId,
