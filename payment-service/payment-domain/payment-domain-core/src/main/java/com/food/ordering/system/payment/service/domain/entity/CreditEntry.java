@@ -40,7 +40,7 @@ public class CreditEntry extends BaseEntity<CreditEntryId> {
         private Builder() {
         }
         
-        public Builder id(final CreditEntryId val) {
+        public Builder creditEntryId(final CreditEntryId val) {
             creditEntryId = val;
             return this;
         }
