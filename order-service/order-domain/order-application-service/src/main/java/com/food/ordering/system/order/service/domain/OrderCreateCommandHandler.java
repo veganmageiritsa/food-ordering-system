@@ -1,7 +1,6 @@
 package com.food.ordering.system.order.service.domain;
 
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.food.ordering.system.order.service.domain.dto.create.CreateOrderCommand;
 import com.food.ordering.system.order.service.domain.dto.create.CreateOrderResponse;
@@ -19,6 +18,7 @@ public class OrderCreateCommandHandler {
     private final OrderDataMapper orderDataMapper;
     
     private final OrderCreatedPaymentRequestMessagePublisher publisher;
+    
     public OrderCreateCommandHandler(
         final OrderCreateHelper orderCreateHelper,
         final OrderDataMapper orderDataMapper,

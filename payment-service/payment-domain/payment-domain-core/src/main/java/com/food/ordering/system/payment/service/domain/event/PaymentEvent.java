@@ -6,7 +6,7 @@ import java.util.List;
 import com.food.ordering.system.domain.event.DomainEvent;
 import com.food.ordering.system.payment.service.domain.entity.Payment;
 
-public class PaymentEvent implements DomainEvent<Payment> {
+public abstract class PaymentEvent implements DomainEvent<Payment> {
     
     private final Payment payment;
     
