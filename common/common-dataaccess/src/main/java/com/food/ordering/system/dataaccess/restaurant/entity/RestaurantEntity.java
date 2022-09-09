@@ -33,12 +33,13 @@ public class RestaurantEntity {
     
     private String restaurantName;
     
-    private boolean restaurantActive;
+    private Boolean restaurantActive;
     
     private String productName;
     
     private BigDecimal productPrice;
     
+    private Boolean productAvailable;
     
     @Override
     public boolean equals(final Object o) {
