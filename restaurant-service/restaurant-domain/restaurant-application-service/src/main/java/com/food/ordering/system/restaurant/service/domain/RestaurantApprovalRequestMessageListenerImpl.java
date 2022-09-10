@@ -3,6 +3,7 @@ package com.food.ordering.system.restaurant.service.domain;
 import org.springframework.stereotype.Service;
 
 import com.food.ordering.system.restaurant.service.domain.dto.RestaurantApprovalRequest;
+import com.food.ordering.system.restaurant.service.domain.event.OrderApprovalEvent;
 import com.food.ordering.system.restaurant.service.domain.ports.input.RestaurantApprovalRequestMessageListener;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,7 +20,8 @@ public class RestaurantApprovalRequestMessageListenerImpl implements RestaurantA
     
     @Override
     public void approveOrder(final RestaurantApprovalRequest restaurantApprovalRequest) {
-        restaurantApprovalRequestHelper.persistOrderApproval(restaurantApprovalRequest);
+        OrderApprovalEvent orderApprovalEvent = restaurantApprovalRequestHelper.persistOrderApproval(restaurantApprovalRequest);
+        orderApprovalEvent.fire();
     }
     
 }
