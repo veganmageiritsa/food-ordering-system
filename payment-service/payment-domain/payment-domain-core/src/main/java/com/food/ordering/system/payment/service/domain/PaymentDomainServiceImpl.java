@@ -31,9 +31,11 @@ public class PaymentDomainServiceImpl implements PaymentDomainService {
         List<String> failureMessages,
         final DomainEventPublisher<PaymentCompletedEvent> paymentCompletedEventDomainEventPublisher,
         final DomainEventPublisher<PaymentFailedEvent> paymentFailedEventDomainEventPublisher) {
-        
+    
         payment.validatePayment(failureMessages);
         payment.initializePayment();
+        creditEntry.getTotalCreditAmount().subtract(payment.getPrice());
+    
         validateCreditEntry(payment, creditEntry, failureMessages);
         subtractCreditEntry(payment, creditEntry);
         updateCreditHistory(payment, creditHistories, TransactionType.DEBIT);
@@ -52,10 +54,10 @@ public class PaymentDomainServiceImpl implements PaymentDomainService {
     
     @Override
     public PaymentEvent validateAndCancelPayment(
-        final Payment payment,
-        final CreditEntry creditEntry,
-        final List<CreditHistory> creditHistories,
-        final List<String> failureMessages,
+        Payment payment,
+        CreditEntry creditEntry,
+        List<CreditHistory> creditHistories,
+        List<String> failureMessages,
         final DomainEventPublisher<PaymentCancelledEvent> paymentCancelledEventDomainEventPublisher,
         final DomainEventPublisher<PaymentFailedEvent> paymentFailedEventDomainEventPublisher) {
         payment.validatePayment(failureMessages);
@@ -75,9 +77,9 @@ public class PaymentDomainServiceImpl implements PaymentDomainService {
     
     
     private void validateCreditHistory(
-        final CreditEntry creditEntry,
-        final List<CreditHistory> creditHistories,
-        final List<String> failureMessages) {
+        CreditEntry creditEntry,
+        List<CreditHistory> creditHistories,
+        List<String> failureMessages) {
         
         final var totalCreditHistory = getTotalCreditHistory(creditHistories, TransactionType.CREDIT);
         
@@ -94,7 +96,7 @@ public class PaymentDomainServiceImpl implements PaymentDomainService {
         
     }
     
-    private Money getTotalCreditHistory(final List<CreditHistory> creditHistories, final TransactionType credit) {
+    private Money getTotalCreditHistory(List<CreditHistory> creditHistories, TransactionType credit) {
         return creditHistories
             .stream()
             .filter(creditHistory -> creditHistory.getTransactionType().equals(credit))
@@ -103,9 +105,9 @@ public class PaymentDomainServiceImpl implements PaymentDomainService {
     }
     
     private void updateCreditHistory(
-        final Payment payment,
+        Payment payment,
         List<CreditHistory> creditHistories,
-        final TransactionType transactionType) {
+        TransactionType transactionType) {
         creditHistories.add(CreditHistory.builder()
                                          .creditHistoryId(new CreditHistoryId(UUID.randomUUID()))
                                          .transactionType(transactionType)
@@ -118,7 +120,7 @@ public class PaymentDomainServiceImpl implements PaymentDomainService {
         creditEntry.subtractCreditAmount(payment.getPrice());
     }
     
-    private void validateCreditEntry(final Payment payment, final CreditEntry creditEntry, final List<String> failureMessages) {
+    private void validateCreditEntry(Payment payment, CreditEntry creditEntry, List<String> failureMessages) {
         if (payment.getPrice().isGreaterThan(creditEntry.getTotalCreditAmount())) {
             log.error("Customer with id : {} doesn't have enough credit for payment", payment.getCustomerId().getValue());
             failureMessages.add("Customer with id : " + payment.getCustomerId().getValue() + " doesn't have enough credit for payment");
