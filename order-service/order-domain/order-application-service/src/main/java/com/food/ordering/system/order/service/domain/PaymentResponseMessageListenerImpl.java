@@ -5,7 +5,6 @@ import org.springframework.validation.annotation.Validated;
 
 import com.food.ordering.system.order.service.domain.dto.message.PaymentResponse;
 import static com.food.ordering.system.order.service.domain.entity.Order.FAILURE_MESSAGE_DELIMITER;
-import com.food.ordering.system.order.service.domain.event.OrderPaidEvent;
 import com.food.ordering.system.order.service.domain.ports.input.message.listener.payment.PaymentResponseMessageListener;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,10 +21,8 @@ public class PaymentResponseMessageListenerImpl implements PaymentResponseMessag
     
     @Override
     public void paymentCompleted(final PaymentResponse paymentResponse) {
-        OrderPaidEvent orderPaidEvent = orderPaymentSaga.process(paymentResponse);
-        log.info("Publishing OrderPaidEvent for order with id: {}", paymentResponse.getOrderId());
-        orderPaidEvent.fire();
-        
+        orderPaymentSaga.process(paymentResponse);
+        log.info("Order Payment Saga process operation is completed for order with id: {}", paymentResponse.getOrderId());
     }
     
     @Override
