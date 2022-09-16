@@ -7,7 +7,7 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.food.ordering.system.order.service.dataaccess.outbox.payment.entity.PaymentOutboxEntity;
+import com.food.ordering.system.dataaccess.outbox.payment.entity.PaymentOutboxEntity;
 import com.food.ordering.system.outbox.OutboxStatus;
 import com.food.ordering.system.saga.SagaStatus;
 

@@ -15,6 +15,7 @@ import com.food.ordering.system.payment.service.domain.entity.Payment;
 import com.food.ordering.system.payment.service.domain.event.PaymentCancelledEvent;
 import com.food.ordering.system.payment.service.domain.event.PaymentCompletedEvent;
 import com.food.ordering.system.payment.service.domain.event.PaymentFailedEvent;
+import com.food.ordering.system.payment.service.domain.outbox.model.OrderEventPayload;
 
 @Component
 public class PaymentMessagingDataMapper {
@@ -61,6 +62,22 @@ public class PaymentMessagingDataMapper {
                                        .setCreatedAt(createdAt.toInstant())
                                        .setPaymentStatus(PaymentStatus.valueOf(payment.getPaymentStatus().name()))
                                        .setFailureMessages(failureMessages)
+                                       .build();
+    }
+    
+    public PaymentResponseAvroModel orderEventPayloadToPaymentResponseAvroModel(
+        String sagaId,
+        OrderEventPayload orderEventPayload) {
+        return PaymentResponseAvroModel.newBuilder()
+                                       .setId(UUID.randomUUID().toString())
+                                       .setSagaId(sagaId)
+                                       .setPaymentId(orderEventPayload.getPaymentId())
+                                       .setCustomerId(orderEventPayload.getCustomerId())
+                                       .setOrderId(orderEventPayload.getOrderId())
+                                       .setPrice(orderEventPayload.getPrice())
+                                       .setCreatedAt(orderEventPayload.getCreatedAt().toInstant())//??
+                                       .setPaymentStatus(PaymentStatus.valueOf(orderEventPayload.getPaymentStatus()))
+                                       .setFailureMessages(orderEventPayload.getFailureMessages())
                                        .build();
     }
     

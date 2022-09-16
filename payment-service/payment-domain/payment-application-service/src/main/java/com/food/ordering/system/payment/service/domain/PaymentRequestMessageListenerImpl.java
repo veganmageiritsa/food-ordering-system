@@ -3,7 +3,6 @@ package com.food.ordering.system.payment.service.domain;
 import org.springframework.stereotype.Service;
 
 import com.food.ordering.system.payment.service.domain.dto.PaymentRequest;
-import com.food.ordering.system.payment.service.domain.event.PaymentEvent;
 import com.food.ordering.system.payment.service.domain.ports.input.message.listener.PaymentRequestMessageListener;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,22 +19,13 @@ public class PaymentRequestMessageListenerImpl implements PaymentRequestMessageL
     
     @Override
     public void completePayment(final PaymentRequest paymentRequest) {
-        PaymentEvent paymentEvent = paymentRequestHelper.persistPayment(paymentRequest);
-        publishEvent(paymentEvent);
+        paymentRequestHelper.persistPayment(paymentRequest);
     }
     
     @Override
     public void cancelPayment(final PaymentRequest paymentRequest) {
-        PaymentEvent paymentEvent = paymentRequestHelper.persistCancelPayment(paymentRequest);
-        publishEvent(paymentEvent);
+        paymentRequestHelper.persistCancelPayment(paymentRequest);
     }
     
-    private void publishEvent(final PaymentEvent paymentEvent) {
-        log.info("Publishing Payment Event for payment id : {} and order Id : {} ",
-                 paymentEvent.getPayment().getId(),
-                 paymentEvent.getPayment().getOrderId());
-        
-        paymentEvent.fire();
-    }
     
 }
