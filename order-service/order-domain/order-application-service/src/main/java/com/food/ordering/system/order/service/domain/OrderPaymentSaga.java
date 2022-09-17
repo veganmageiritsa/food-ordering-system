@@ -137,7 +137,7 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
             case FAILED:
                 return new SagaStatus[]{ SagaStatus.STARTED, SagaStatus.PROCESSING };
         }
-        return null;
+        return new SagaStatus[0];
     }
     
     private Order rollbackPaymentForOrder(PaymentResponse paymentResponse) {
