@@ -8,4 +8,5 @@ import com.food.ordering.system.order.service.domain.entity.Customer;
 public interface CustomerRepository {
     Optional<Customer> findCustomer(UUID customerId);
     
+    Customer save(Customer customer);
 }

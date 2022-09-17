@@ -10,7 +10,16 @@ import com.food.ordering.system.order.service.domain.entity.Customer;
 public class CustomerDataAccessMapper {
     
     public Customer customerEntityToCustomer(CustomerEntity customerEntity) {
-        return new Customer(new CustomerId(customerEntity.getId()));
+        return new Customer(new CustomerId(customerEntity.getId()), customerEntity.getUserName(), customerEntity.getLastName(), customerEntity.getFirstName());
+    }
+    
+    public CustomerEntity customerToCustomerEntity(Customer customer) {
+        return CustomerEntity.builder()
+                             .id(customer.getId().getValue())
+                             .userName(customer.getUserName())
+                             .firstName(customer.getFirstName())
+                             .lastName(customer.getLastName())
+                             .build();
     }
     
 }
